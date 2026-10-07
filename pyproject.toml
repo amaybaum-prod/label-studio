@@ -1,102 +1,49 @@
-[tool.ruff]
-# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = [
-    # Pyflakes
-    "F",
-    # Pycodestyle
-    "E",
-    # isort
-    "I001"
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "label-studio-converter"
+version = "0.0.59"
+description = "Format converter add-on for Label Studio"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "HUMANAI Inc."},
 ]
-ignore = [
-    "E501",
-    "E402", # ignores: Module level import not at top of file.  (isort takes care of this and if not, there is usually a good reason)
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
-
-
-
-# Allow autofix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-    "**/migrations/*.py",
+dependencies = [
+    "nltk>=3.10.3",
+    "label-studio-sdk>=0.0.41",
 ]
 
-# Same as Blue.
-line-length = 119
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "coverage",
+]
 
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+[project.urls]
+Homepage = "https://github.com/HumanSignal/label-studio-converter"
 
-# Assume Python 3.8 at a minimum
-target-version = "py38"
+[tool.setuptools.packages.find]
+where = ["src"]
 
-[tool.ruff.per-file-ignores]
-# Ignore deleting imports in __init__.py files as they're actually being used.
-"__init__.py" = ["F401"]
-"**/settings/label_studio.py" = ["F405"]
-"test*.py" = ["F811"]
+[tool.black]
+line-length = 99
+target-version = ['py38', 'py39', 'py310', 'py311']
 
-
-[tool.blue]
-
-line-length = 119
-
-include = 'label_studio/.*\.py$'
-
-# Exclude a variety of commonly ignored directories, as well as all migrations files.
-force-exclude = '''
-/(
-    \.bzr
-  | \.direnv
-  | \.eggs
-  | \.git
-  | \.github
-  | \.git-rewrite
-  | \.hg
-  | \.mypy_cache
-  | \.nox
-  | \.pants.d
-  | \.pytype
-  | \.ruff_cache
-  | \.svn
-  | \.tox
-  | \.venv
-  | \.hg
-  | _build
-  | buck-out
-  | build
-  | dist
-  | node_modules
-  | migrations
-  | venv
-  | __pycache__
-)/
-'''
-
-target-version = ['py38']
+[tool.isort]
+profile = "black"
+line_length = 99
