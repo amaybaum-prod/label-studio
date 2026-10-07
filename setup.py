@@ -1,48 +1,29 @@
-"""This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
-"""
+from setuptools import setup, find_packages
+import os
 
-import setuptools
+# Read version from package
+def get_version():
+    version_file = os.path.join(os.path.dirname(__file__), "src", "label_studio_converter", "__init__.py")
+    with open(version_file) as f:
+        for line in f:
+            if line.startswith("__version__"):
+                return line.split("=")[1].strip().strip("\"'")
+    return "0.0.59"
 
-import label_studio
-
-print(label_studio.package_name, label_studio.__version__)
-
-# Readme
-with open('README.md', 'r', encoding='utf-8') as f:
-    long_description = f.read()
-
-# Module dependencies
-requirements, dependency_links = [], []
-with open('deploy/requirements.txt') as f:
-    for line in f.read().splitlines():
-        if line.startswith('-e git+'):
-            dependency_links.append(line.replace('-e ', ''))
-        else:
-            requirements.append(line)
-
-setuptools.setup(
-    name=label_studio.package_name,
-    version=label_studio.__version__,
-    author='Heartex',
-    author_email='hello@heartex.ai',
-    description='Label Studio annotation tool',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='https://github.com/heartexlabs/label-studio',
-    packages=setuptools.find_packages(),
-    include_package_data=True,
-    classifiers=[
-        'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
+setup(
+    name="label-studio-converter",
+    version=get_version(),
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
+    install_requires=[
+        "nltk>=3.10.3",
+        "label-studio-sdk>=0.0.41",
     ],
-    install_requires=requirements,
-    dependency_links=dependency_links,
-    python_requires='>=3.6',
-    entry_points={
-        'console_scripts': [
-            'label-studio=label_studio.server:main',
-        ],
+    extras_require={
+        "test": [
+            "pytest",
+            "coverage",
+        ]
     },
-    extras_require={'mysql': ['mysqlclient']},
+    python_requires=">=3.8",
 )
